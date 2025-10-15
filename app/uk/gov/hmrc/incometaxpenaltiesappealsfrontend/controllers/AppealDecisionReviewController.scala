@@ -20,9 +20,9 @@ import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import uk.gov.hmrc.incometaxpenaltiesappealsfrontend.config.{AppConfig, ErrorHandler}
 import uk.gov.hmrc.incometaxpenaltiesappealsfrontend.controllers.auth.actions.AuthActions
 import uk.gov.hmrc.incometaxpenaltiesappealsfrontend.controllers.auth.models.CurrentUserRequestWithAnswers
-import uk.gov.hmrc.incometaxpenaltiesappealsfrontend.forms.CrimeReportedForm
-import uk.gov.hmrc.incometaxpenaltiesappealsfrontend.models.{CheckMode, Mode, NormalMode}
-import uk.gov.hmrc.incometaxpenaltiesappealsfrontend.pages.CrimeReportedPage
+import uk.gov.hmrc.incometaxpenaltiesappealsfrontend.forms.AppealDecisionReviewForm
+import uk.gov.hmrc.incometaxpenaltiesappealsfrontend.models.{AppealDecisionReviewEnum, CheckMode, Mode, NormalMode}
+import uk.gov.hmrc.incometaxpenaltiesappealsfrontend.pages.{AppealDecisionReviewPage, LateAppealPage}
 import uk.gov.hmrc.incometaxpenaltiesappealsfrontend.services.UserAnswersService
 import uk.gov.hmrc.incometaxpenaltiesappealsfrontend.utils.TimeMachine
 import uk.gov.hmrc.incometaxpenaltiesappealsfrontend.views.html._
@@ -31,43 +31,48 @@ import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 
-class CrimeReportedController @Inject()(hasTheCrimeBeenReported: HasTheCrimeBeenReportedView,
-                                        val authActions: AuthActions,
-                                        userAnswersService: UserAnswersService,
-                                        override val errorHandler: ErrorHandler,
-                                        override val controllerComponents: MessagesControllerComponents
+class AppealDecisionReviewController @Inject()(appealDecisionReview: AppealDecisionReviewView,
+                                               val authActions: AuthActions,
+                                               userAnswersService: UserAnswersService,
+                                               override val errorHandler: ErrorHandler,
+                                               override val controllerComponents: MessagesControllerComponents
                                        )(implicit ec: ExecutionContext, timeMachine: TimeMachine, val appConfig: AppConfig) extends BaseUserAnswersController {
 
   def onPageLoad(isAgent: Boolean, mode: Mode): Action[AnyContent] = authActions.asMTDUserWithUserAnswers(isAgent) { implicit user =>
-    Ok(hasTheCrimeBeenReported(
-      form = fillForm(CrimeReportedForm.form(), CrimeReportedPage),
-      isLate = user.isAppealLate(),
+    Ok(appealDecisionReview(
+      form = fillForm(AppealDecisionReviewForm.form(), AppealDecisionReviewPage),
       isAgent = user.isAgent,
       mode
     ))
   }
 
   def submit(isAgent: Boolean, mode: Mode): Action[AnyContent] = authActions.asMTDUserWithUserAnswers(isAgent).async { implicit user =>
-    CrimeReportedForm.form().bindFromRequest().fold(
+    AppealDecisionReviewForm.form().bindFromRequest().fold(
       formWithErrors =>
-        Future(BadRequest(hasTheCrimeBeenReported(
+        Future(BadRequest(appealDecisionReview(
           form = formWithErrors,
-          isLate = user.isAppealLate(),
           isAgent = user.isAgent,
           mode
         ))),
       value => {
-        val updatedAnswers = user.userAnswers.setAnswer(CrimeReportedPage, value)
+        val updatedAnswers = user.userAnswers.setAnswer(AppealDecisionReviewPage, value)
+        if(value != AppealDecisionReviewEnum.yes && mode == CheckMode) {
+          // If user selects "No" in check mode, we need to remove LateAppealPage answer as it's no longer relevant
+          val answersWithLateAppealRemoved = updatedAnswers.removeAnswer(LateAppealPage)
+          userAnswersService.updateAnswers(answersWithLateAppealRemoved).map { _ =>
+            Redirect(nextPage(mode, value))
+          }
+        } else
         userAnswersService.updateAnswers(updatedAnswers).map { _ =>
-          Redirect(nextPage(mode))
+          Redirect(nextPage(mode, value))
         }
       }
     )
   }
 
-  private def nextPage(mode: Mode)(implicit user: CurrentUserRequestWithAnswers[AnyContent]): Call =
-    (mode) match {
-      case (NormalMode) => routes.AppealDecisionReviewController.onPageLoad(isAgent = user.isAgent, mode = mode)
-      case (CheckMode) => routes.CheckYourAnswersController.onPageLoad(user.isAgent)
+  private def nextPage(mode: Mode, value: AppealDecisionReviewEnum.Value)(implicit user: CurrentUserRequestWithAnswers[AnyContent]): Call =
+    (value, mode) match {
+      case (AppealDecisionReviewEnum.yes, _) => routes.LateAppealController.onPageLoad(isAgent = user.isAgent, is2ndStageAppeal = user.is2ndStageAppeal, mode = mode)
+      case (_, _) => routes.CheckYourAnswersController.onPageLoad(user.isAgent)
     }
 }

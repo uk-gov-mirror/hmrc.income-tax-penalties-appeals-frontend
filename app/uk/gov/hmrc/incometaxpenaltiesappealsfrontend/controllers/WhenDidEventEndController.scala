@@ -65,7 +65,7 @@ class WhenDidEventEndController @Inject()(whenDidEventEnd: WhenDidEventEndView,
           userAnswersService.updateAnswers(updatedAnswers).map { _ =>
             if (user.isAppealLate()) {
               Redirect(
-                if(mode == CheckMode) routes.CheckYourAnswersController.onPageLoad(user.isAgent) else routes.LateAppealController.onPageLoad(isAgent = user.isAgent, is2ndStageAppeal = user.is2ndStageAppeal, mode = mode))
+                if(mode == CheckMode) routes.CheckYourAnswersController.onPageLoad(user.isAgent) else routes.AppealDecisionReviewController.onPageLoad(isAgent = user.isAgent, mode = mode))
             } else {
               Redirect(
                 if(mode == CheckMode) routes.CheckYourAnswersController.onPageLoad(user.isAgent) else routes.CheckYourAnswersController.onPageLoad(isAgent = user.isAgent))

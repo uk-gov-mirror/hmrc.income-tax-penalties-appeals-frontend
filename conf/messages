@@ -292,6 +292,19 @@ whenDidEventEnd.unexpectedHospital.end.date.error.invalid = The date that the ho
 whenDidEventEnd.unexpectedHospital.end.date.error.notInFuture = The date that the hospital stay ended must be today or in the past
 whenDidEventEnd.unexpectedHospital.end.date.error.endDateLessThanStartDate = The date that the hospital stay ended must be {0} or later
 
+
+# Review decision more then 30 days page
+# ----------------------------------------------------------
+review.decision.30.days.headingAndTitle = Has it been more than 30 days since the appeal decision was issued?
+review.decision.30.days.hint = You usually need to ask for a review within 30 days of the date of the decision.
+review.decision.30.days.yes = Yes
+review.decision.30.days.no = No
+review.decision.30.days.unsure = Don’t know
+review.decision.30.days.error.required = Tell us if it has been more than 30 days since the appeal decision was issued
+review.decision.30.days.error.invalid = Tell us if it has been more than 30 days since the appeal decision was issued
+
+
+
 # Late appeal page
 # ----------------------------------------------------------
 lateAppeal.headingAndTitle = This penalty point was issued more than {0} days ago
@@ -418,6 +431,9 @@ checkYourAnswers.crimeReported.change.hidden = has this crime been reported to t
 
 checkYourAnswers.hasHospitalStayEnded.unexpectedHospital.key = Has the hospital stay ended?
 checkYourAnswers.hasHospitalStayEnded.unexpectedHospital.change.hidden = has the hospital stay ended
+
+checkYourAnswers.appealDecisionReviewed.key = Has it been more than 30 days since the appeal decision was issued?
+checkYourAnswers.appealDecisionReviewed.change.hidden = has it been more than 30 days since the appeal decision was issued
 
 checkYourAnswers.whenDidEventHappen.bereavement.key =  When did the person die?
 checkYourAnswers.whenDidEventHappen.bereavement.change.hidden =  when did the person die
@@ -636,6 +652,7 @@ common.yes = Yes
 common.no = No
 common.remove = Remove
 common.change = Change
+common.unsure = Don’t know
 
 # Duplicate Appeal
 # ----------------------------------------------------------

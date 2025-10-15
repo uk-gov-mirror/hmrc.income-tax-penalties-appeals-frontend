@@ -227,6 +227,20 @@ GET        /agent-when-did-the-hospital-stay-end/check       uk.gov.hmrc.incomet
 POST       /agent-when-did-the-hospital-stay-end/check      uk.gov.hmrc.incometaxpenaltiesappealsfrontend.controllers.WhenDidEventEndController.submit(reasonableExcuse: ReasonableExcuse = UnexpectedHospital, isAgent:Boolean = true, mode: Mode = CheckMode)
 
 
+
+GET        /review-more-than-30-days                   uk.gov.hmrc.incometaxpenaltiesappealsfrontend.controllers.AppealDecisionReviewController.onPageLoad(isAgent: Boolean = false, mode: Mode = NormalMode)
+POST       /review-more-than-30-days                   uk.gov.hmrc.incometaxpenaltiesappealsfrontend.controllers.AppealDecisionReviewController.submit(isAgent: Boolean = false, mode: Mode = NormalMode)
+
+GET        /review-more-than-30-days/check                   uk.gov.hmrc.incometaxpenaltiesappealsfrontend.controllers.AppealDecisionReviewController.onPageLoad(isAgent: Boolean = false, mode: Mode = CheckMode)
+POST       /review-more-than-30-days/check                   uk.gov.hmrc.incometaxpenaltiesappealsfrontend.controllers.AppealDecisionReviewController.submit(isAgent: Boolean = false, mode: Mode = CheckMode)
+
+GET        /agent-review-more-than-30-days                   uk.gov.hmrc.incometaxpenaltiesappealsfrontend.controllers.AppealDecisionReviewController.onPageLoad(isAgent: Boolean = true, mode: Mode = NormalMode)
+POST       /agent-review-more-than-30-days                   uk.gov.hmrc.incometaxpenaltiesappealsfrontend.controllers.AppealDecisionReviewController.submit(isAgent: Boolean = true, mode: Mode = NormalMode)
+
+GET        /agent-review-more-than-30-days/check                   uk.gov.hmrc.incometaxpenaltiesappealsfrontend.controllers.AppealDecisionReviewController.onPageLoad(isAgent: Boolean = true, mode: Mode = CheckMode)
+POST       /agent-review-more-than-30-days/check                   uk.gov.hmrc.incometaxpenaltiesappealsfrontend.controllers.AppealDecisionReviewController.submit(isAgent: Boolean = true, mode: Mode = CheckMode)
+
+
 # Late appeal page
 GET        /making-a-late-appeal                    uk.gov.hmrc.incometaxpenaltiesappealsfrontend.controllers.LateAppealController.onPageLoad(isAgent: Boolean = false, is2ndStageAppeal: Boolean = false, mode: Mode = NormalMode)
 POST       /making-a-late-appeal                    uk.gov.hmrc.incometaxpenaltiesappealsfrontend.controllers.LateAppealController.submit(isAgent: Boolean = false, is2ndStageAppeal: Boolean = false, mode: Mode = NormalMode)

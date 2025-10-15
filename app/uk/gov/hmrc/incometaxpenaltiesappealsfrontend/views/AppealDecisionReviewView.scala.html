@@ -16,12 +16,13 @@
 
 @import uk.gov.hmrc.govukfrontend.views.Implicits._
 @import uk.gov.hmrc.govukfrontend.views.html.components._
-@import uk.gov.hmrc.incometaxpenaltiesappealsfrontend.forms.HasHospitalStayEndedForm
+@import uk.gov.hmrc.incometaxpenaltiesappealsfrontend.models.{AppealDecisionReviewEnum, Mode}
 @import uk.gov.hmrc.incometaxpenaltiesappealsfrontend.controllers.auth.models.CurrentUserRequestWithAnswers
 @import uk.gov.hmrc.incometaxpenaltiesappealsfrontend.viewmodels.ErrorSummaryViewModel
 @import uk.gov.hmrc.incometaxpenaltiesappealsfrontend.views.ViewUtils.titleBuilder
-@import uk.gov.hmrc.incometaxpenaltiesappealsfrontend.views.helpers.YesNoRadioHelper
 @import uk.gov.hmrc.incometaxpenaltiesappealsfrontend.views.html.{Layout, components}
+@import uk.gov.hmrc.incometaxpenaltiesappealsfrontend.forms.AppealDecisionReviewForm
+
 
 @this(layout: Layout,
         govukButton : GovukButton,
@@ -36,28 +37,28 @@
         mode: Mode
 )(implicit request: CurrentUserRequestWithAnswers[_], messages: Messages)
 
-@layout(Some(titleBuilder(messages("hasHospitalStayEnded.headingAndTitle"), Some(form))), backLinkEnabled = true, isAgent = isAgent) {
+@layout(Some(titleBuilder(messages("review.decision.30.days.headingAndTitle"), Some(form))), backLinkEnabled = true, isAgent = isAgent) {
 
     @if(form.errors.nonEmpty) {
         @govukErrorSummary(ErrorSummaryViewModel(form))
     }
 
-    @formHelper(action = uk.gov.hmrc.incometaxpenaltiesappealsfrontend.controllers.routes.HasHospitalStayEndedController.submit(isAgent = isAgent, mode = mode)) {
+    @formHelper(action = uk.gov.hmrc.incometaxpenaltiesappealsfrontend.controllers.routes.AppealDecisionReviewController.submit(isAgent, mode)) {
 
         @caption()
 
         @govukRadios(Radios(
             fieldset = Some(Fieldset(
                 legend = Some(Legend(
-                    content = Text(messages("hasHospitalStayEnded.headingAndTitle")),
+                    content = Text(messages("review.decision.30.days.headingAndTitle")),
                     classes = "govuk-fieldset__legend--l",
                     isPageHeading = true
                 ))
             )),
-            name = HasHospitalStayEndedForm.key,
-            items = YesNoRadioHelper.radios(),
-            classes = "govuk-radios--inline"
-        ).withFormField(form(HasHospitalStayEndedForm.key)))
+            hint = Some(Hint(content = Text(messages("review.decision.30.days.hint")))),
+            name = AppealDecisionReviewForm.key,
+            items = AppealDecisionReviewEnum.radioOptions(),
+        ).withFormField(form(AppealDecisionReviewForm.key)))
 
         <div class="govuk-form-group">
             @govukButton(Button(

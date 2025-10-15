@@ -144,14 +144,14 @@ class HasHospitalStayEndedControllerISpec extends ControllerISpecHelper {
 
             if (mode == NormalMode) {
 
-              "save the value to UserAnswers AND redirect to the LateAppeal page when hasHospitalStayEnded is false" in new Setup(isLate = true) {
+              "save the value to UserAnswers AND redirect to appeal review more than 30 days page when hasHospitalStayEnded is false" in new Setup(isLate = true) {
 
                 stubAuthRequests(isAgent)
 
                 val result: WSResponse = post(url)(Map(HasHospitalStayEndedForm.key -> false))
 
                 result.status shouldBe SEE_OTHER
-                result.header("Location") shouldBe Some(routes.LateAppealController.onPageLoad(isAgent, is2ndStageAppeal, NormalMode).url)
+                result.header("Location") shouldBe Some(routes.AppealDecisionReviewController.onPageLoad(isAgent, NormalMode).url)
 
                 userAnswersRepo.getUserAnswer(testJourneyId).futureValue.flatMap(_.getAnswer(HasHospitalStayEndedPage)) shouldBe Some(false)
               }

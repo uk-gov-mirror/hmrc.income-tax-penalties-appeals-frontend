@@ -292,6 +292,18 @@ whenDidEventEnd.unexpectedHospital.end.date.error.invalid = Mae’n rhaid i’r 
 whenDidEventEnd.unexpectedHospital.end.date.error.notInFuture = Mae’n rhaid i’r dyddiad pan ddaeth yr arhosiad yn yr ysbyty i ben fod heddiw neu yn y gorffennol
 whenDidEventEnd.unexpectedHospital.end.date.error.endDateLessThanStartDate = Mae’n rhaid i’r dyddiad y daeth yr arhosiad yn yr ysbyty i ben fod ar {0} neu’n hwyrach
 
+
+# Review decision more then 30 days page
+# ----------------------------------------------------------
+review.decision.30.days.headingAndTitle = Has it been more than 30 days since the appeal decision was issued? (Welsh)
+review.decision.30.days.hint = You usually need to ask for a review within 30 days of the date of the decision. (Welsh)
+review.decision.30.days.yes = Iawn
+review.decision.30.days.no = Na
+review.decision.30.days.unsure = Nid wyf yn gwybod
+review.decision.30.days.error.required = Tell us if it has been more than 30 days since the appeal decision was issued
+review.decision.30.days.error.invalid = Tell us if it has been more than 30 days since the appeal decision was issued
+
+
 # Late appeal page
 # ----------------------------------------------------------
 lateAppeal.headingAndTitle = Cafodd y pwynt cosb ei anfon dros {0} diwrnod yn ôl
@@ -418,6 +430,9 @@ checkYourAnswers.crimeReported.change.hidden = A roddwyd gwybod i’r heddlu am 
 
 checkYourAnswers.hasHospitalStayEnded.unexpectedHospital.key = A yw’r arhosiad yn yr ysbyty wedi dod i ben?
 checkYourAnswers.hasHospitalStayEnded.unexpectedHospital.change.hidden = A yw’r arhosiad yn yr ysbyty wedi dod i ben?
+
+checkYourAnswers.appealDecisionReviewed.key = Has it been more than 30 days since the appeal decision was issued? (Welsh)
+checkYourAnswers.appealDecisionReviewed.change.hidden = has it been more than 30 days since the appeal decision was issued (Welsh)
 
 checkYourAnswers.whenDidEventHappen.bereavement.key =  Pryd y bu farw’r person?
 checkYourAnswers.whenDidEventHappen.bereavement.change.hidden =  Pryd y bu farw’r person
@@ -636,6 +651,7 @@ common.yes = Iawn
 common.no = Na
 common.remove = Tynnu
 common.change = Newid
+common.unsure = Nid wyf yn gwybod
 
 # Duplicate Appeal
 # ----------------------------------------------------------

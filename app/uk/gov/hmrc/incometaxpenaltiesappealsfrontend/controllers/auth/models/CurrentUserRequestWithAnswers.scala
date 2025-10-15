@@ -71,20 +71,14 @@ case class CurrentUserRequestWithAnswers[A](mtdItId: String,
   def lateAppealDays()(implicit appConfig: AppConfig): Int =
     if(userAnswers.getAnswer(ReasonableExcusePage).contains(Bereavement)) appConfig.bereavementLateDays else appConfig.lateDays
 
-  def isAppealLate()(implicit timeMachine: TimeMachine, appConfig: AppConfig): Boolean = {
+  def isLateFirstStage()(implicit timeMachine: TimeMachine, appConfig: AppConfig): Boolean = {
     val dateWhereLateAppealIsApplicable: LocalDate = timeMachine.getCurrentDate.minusDays(lateAppealDays())
 
-    if(is2ndStageAppeal) {
-      //TODO: The logic to determine this for second stage appeal is dependent on an API change to 1811 to return
-      //      the date that the appeal was rejected. This will be implemented in a future story.
-      false
+    if (userAnswers.getAnswer(JointAppealPage).contains(true)) {
+      firstPenaltyCommunicationDate.exists(_.isBefore(dateWhereLateAppealIsApplicable)) ||
+        secondPenaltyCommunicationDate.exists(_.isBefore(dateWhereLateAppealIsApplicable))
     } else {
-      if (userAnswers.getAnswer(JointAppealPage).contains(true)) {
-        firstPenaltyCommunicationDate.exists(_.isBefore(dateWhereLateAppealIsApplicable)) ||
-          secondPenaltyCommunicationDate.exists(_.isBefore(dateWhereLateAppealIsApplicable))
-      } else {
-        communicationSent.isBefore(dateWhereLateAppealIsApplicable)
-      }
+      communicationSent.isBefore(dateWhereLateAppealIsApplicable)
     }
   }
 
